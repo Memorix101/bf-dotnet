@@ -79,7 +79,24 @@ namespace bf_dotnet_core
         public static void Main(string[] args)
         {
             Console.WriteLine("bf-dotnet-core v0.9 - Copyright (c) 2021 Memorix101\n");            
-            string code = File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + "main.bf");
+            string bfc_path = $"{AppDomain.CurrentDomain.BaseDirectory}main.bf";
+            string[] cmd_args = new string[5];
+
+            for (int i = 0; i < args.Length; i++)
+            {
+              cmd_args[i] = args[i];
+            }
+
+            if(cmd_args[0] != "-d" && cmd_args[0] != null)
+            {
+              bfc_path = cmd_args[0];
+            }
+            else if(cmd_args[0] == "-d" && cmd_args[1] != null)
+            {
+              bfc_path = cmd_args[1];
+            }
+
+            string code = File.ReadAllText(bfc_path);
             bool skip_forward = false;
             int skip_id = 0;
             for (int i = 0; i < code.Length; i++)
@@ -149,7 +166,11 @@ namespace bf_dotnet_core
                 }                
               }
             }
-          debug_print_cells();
+
+          if(cmd_args[0] == "-d")
+          {
+            debug_print_cells();
+          }
         }
     }
 }
